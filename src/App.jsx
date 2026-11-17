@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight, Waves, ShieldCheck, CreditCard, CalendarDays, MapPin, Wind, Clock3, Menu, X, Star, Users, Globe2, Activity, Instagram, Linkedin, Youtube, ChevronDown, Check, Heart, Compass, Mail, Play } from 'lucide-react';
 import Bracelet3D from './components/Bracelet3D.jsx';
 import logoImage from '../logo.png';
+import qrImage from '../qr_code.png';
 
 const spots = [
   { name:'Taghazout', country:'Morocco', wave:'1.8 m', wind:'12 km/h NW', tide:'High tide · 16:20', temp:'24°', condition:'Good waves', image:'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=900&q=85' },
@@ -19,8 +20,12 @@ function Logo({light=false}) { return <a className={`logo ${light?'logo-light':'
 
 function Header() {
   const [open,setOpen]=useState(false);
+  const [qrOpen,setQrOpen]=useState(false);
   const links=[['Home','#home'],['The bracelet','#bracelet'],['Features','#features'],['Surf forecast','#forecast'],['Pricing','#pricing'],['About us','#about']];
-  return <header className="header"><div className="container nav-wrap"><a className="header-logo" href="#home" aria-label="WaveBand home"><img src={logoImage} alt="WaveBand" /></a><nav className={open?'nav nav-open':'nav'}>{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)}>{label}</a>)}</nav><a className="btn btn-small nav-cta" href="#pricing">Get WaveBand <ArrowRight size={15}/></a><button className="menu-btn" onClick={()=>setOpen(!open)} aria-label="Toggle navigation">{open?<X/>:<Menu/>}</button></div></header>;
+  return <>
+    <header className="header"><div className="container nav-wrap"><a className="header-logo" href="#home" aria-label="WaveBand home"><img src={logoImage} alt="WaveBand" /></a><nav className={open?'nav nav-open':'nav'}>{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)}>{label}</a>)}</nav><div className="header-actions"><button type="button" className="qr-button" onClick={()=>setQrOpen(true)} aria-label="Open QR code"><img src={qrImage} alt="WaveBand QR code" /></button><a className="btn btn-small nav-cta" href="#pricing">Get WaveBand <ArrowRight size={15}/></a></div><button className="menu-btn" onClick={()=>setOpen(!open)} aria-label="Toggle navigation">{open?<X/>:<Menu/>}</button></div></header>
+    {qrOpen && <div className="qr-modal" onClick={()=>setQrOpen(false)} role="dialog" aria-modal="true" aria-label="WaveBand QR code"><div className="qr-modal-card" onClick={e=>e.stopPropagation()}><button type="button" className="qr-close" onClick={()=>setQrOpen(false)} aria-label="Close QR code">×</button><img src={qrImage} alt="WaveBand QR code" /><p>Scan to discover WaveBand</p></div></div>}
+  </>;
 }
 
 function Hero() {
